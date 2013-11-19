@@ -5,7 +5,7 @@
 clc
 clear all
 %% PARAMETER SETUP
-dt = 0.1;
+dt = 1;
 t = 100;
 % membrane time constant
 tau = 10; %e-3
@@ -16,22 +16,20 @@ Vreset = -80; %e-3
 %  time window
 T = round(t/dt);
 % voltage matrix
-V = zeros(1, round(t/dt));
+Vmat = zeros(1, round(t/dt));
 % refactory period
+ref = 0;
 %% MODEL
-time = 1:dt:T-dt;
-V(1,1) = Vrest;
-% steps must be an integer...
+Vmat(1,1) = Vrest;
 for step = 2:1:T
-	V(1, step)= V(1, step-1)+50;
-	V(1, step) = 0;
-	if V(1, step) > theta
-		V(1, step) = Vrest; % DECAY EXPONENTIALLY
+	Vmat(1, step)= Vmat(1, step-1)+1;
+	if Vmat(1, step) > theta
+		Vmat(1, step) = Vrest; % DECAY EXPONENTIALLY
 	end
 end
-
+time = 0:dt:T-dt;
 %% PLOTTING
  figure(1);
- plot(time,V)
+ plot(time,Vmat)
  xlabel('Time (ms)');
  ylabel('Membrane potential (mV)');
