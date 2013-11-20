@@ -6,7 +6,7 @@ clc
 clear all
 %% PARAMETER SETUP
 dt = 0.01;
-t = 30;
+t = 20;
 % membrane time constant
 tau = 10;
 % the spike threshold
@@ -25,15 +25,22 @@ time = 0:dt:(t-dt);
 Vmat(1,1) = Vrest;
 % for calculating the new voltage
 alpha = dt/tau;
+Xj = 0;
 % simulation
 for step = 2:1:T
-	%eta = sum((Wij)/tau)*xj
-	eta = 0;
+	eta = sum((Vrest*Xj)/tau);
+	%eta = 0;
+	% calculate new voltage
 	Vmat(1, step) = (1-alpha).*Vmat(1, step-1) + eta;
 	if Vmat(1, step) > theta
+		% spike
+		Vmat(1, step-1) = 1;
 		% voltage reset
 		Vmat(1, step) = Vrest;
-		Vmat(1, step-1) = 1;
+		Xj = 1;
+	else
+		% no spike
+		Xj = 0;
 	end
 end
 %% PLOTTING
