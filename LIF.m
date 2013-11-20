@@ -1,33 +1,44 @@
 %%
-% Leaky Integrate and fire Neuron model
+% Leaky integrate and fire model
 % Author: Lianne Meah
-%
 %% CLEANUP
-clear all
 clc
+clear all
 %% PARAMETER SETUP
-tau = 10e-3; % membrane time constant
-Rm = 3e7;
-dt = 0.001; % time step
-T = 0.5; %time of simulation
-totalSteps = round(T/dt);
-time = 0:dt:T;
-Vrest = -7e-3;
-theta = -5e-3;
-Vmat = zeros(1, totalSteps+1);
+dt = 0.01;
+t = 30;
+% membrane time constant
+tau = 10;
+% the spike threshold
+theta = -50;
+Vrest = -70;
+%  time window - max time
+T = round(t/dt);
+% voltage matrix
+Vmat = zeros(1, T);
+% refactory period
+ref = 0;
+% keep track of time for plotting
+time = 0:dt:(t-dt);
 %% MODEL
+% initially set voltage to rest
 Vmat(1,1) = Vrest;
+% for calculating the new voltage
+alpha = dt/tau;
+% simulation
 for step = 2:1:T
-    dV = (-1./tau).*Vmat(1, step).*dt;
-    %Vmat(1, step+1) = Vmat(1, step) + dV;
-    Vmat(1, step)= Vmat(1, step-1)+dV;
-    %if Vmat(1, step) > theta
-     %   Vmat(1, step) = Vrest;
-    %end
+	%eta = sum((Wij)/tau)*xj
+	eta = 0;
+	Vmat(1, step) = (1-alpha).*Vmat(1, step-1) + eta;
+	if Vmat(1, step) > theta
+		% voltage reset
+		Vmat(1, step) = Vrest;
+		Vmat(1, step-1) = 1;
+	end
 end
 %% PLOTTING
-clf;
 figure(1);
-plot(time,Vmat);
+plot(time,Vmat, 'r')
+title('Spiking for leaky integrate and fire model');
 xlabel('Time (ms)');
 ylabel('Membrane potential (mV)');
