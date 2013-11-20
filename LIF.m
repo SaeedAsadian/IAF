@@ -5,7 +5,7 @@
 clc
 clear all
 %% PARAMETER SETUP
-dt = 0.01;
+dt = 0.001;
 t = 20;
 % membrane time constant
 tau = 10;
@@ -28,7 +28,7 @@ alpha = dt/tau;
 Xj = 0;
 % simulation
 for step = 2:1:T
-	eta = sum((Vrest*Xj)/tau);
+	eta = sum((Vmat(1, step)*Xj)/tau);
 	%eta = 0;
 	% calculate new voltage
 	Vmat(1, step) = (1-alpha).*Vmat(1, step-1) + eta;
@@ -36,7 +36,7 @@ for step = 2:1:T
 		% spike
 		Vmat(1, step-1) = 1;
 		% voltage reset
-		Vmat(1, step) = Vrest;
+		Vmat(1, step) = Vrest-5;
 		Xj = 1;
 	else
 		% no spike
