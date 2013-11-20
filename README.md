@@ -1,4 +1,4 @@
 IAF
 ===
 
-Integrate-and-fire MATLAB model
+Leaky integrate and fire neural MATLAB model
