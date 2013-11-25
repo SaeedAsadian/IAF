@@ -13,7 +13,7 @@ R = 3e7;
 % resting potential
 E = -0.070;
 % threshold for a spike
-theta = -0.035;
+theta = -0.030;
 % change in time - window
 dt = 0.0001;
 % total milliseconds to run for
@@ -50,7 +50,7 @@ randI = 3e-9 .* random('Normal', 0, 1.5, [1, no_steps]);
 % time since last spike
 t_spike = 0;
 % absolute refactory period
-arp = 0.02; %this being 0.02 doesn't work.
+arp = 0.01; %this being 0.02 doesn't work.
 % total number of spikes
 no_spikes = 0;
 
@@ -100,7 +100,9 @@ figure(1)
 plot(time, V, 'color', 'black');
 hold on
 plot(time, theta, '--r');
-title(sprintf('LIF with noise; theta is %.3fV, refactory is %.2fs',theta, arp));
+line1 = 'Leaky integrate-and-fire model with noise';
+line2 = sprintf('theta: %.3fV, refactory period: %.2fs',theta, arp);
+title({line1, line2});
 xlabel('time (s)')
 ylabel('voltage (V)')
 grid on
