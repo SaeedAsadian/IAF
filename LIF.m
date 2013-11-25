@@ -15,7 +15,7 @@ E = -0.070;
 % threshold for a spike
 theta = -0.030;
 % change in time - window
-dt = 0.0001;
+dt = 0.0001; %should be less than tau
 % total milliseconds to run for
 T = 0.16;
 % total number of steps
@@ -33,7 +33,7 @@ ipsc(1) = 0.04;
 % number of external events
 no_pcs = length(psc);
 no_ipcs = length(ipsc);
-tau_s = 0.003;
+tau_s = 0.003; %should be less than tau
 Q = 40e-12;
 I_0 = Q ./ tau_s;
 % index for each ext. event? IE psc(1)/dt, psc(2)/dt...
