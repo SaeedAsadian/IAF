@@ -24,17 +24,21 @@ no_steps = round(T ./ dt);
 time = linspace(0, T, no_steps + 1);
 % external events array
 psc = [];
+ % external inhibition event
+ipsc = [];
 % set up PSC events - external current give rise to inc v.  
 psc(1) = 0.05;
-psc(2) = 0.07;
-%psc(3) = 0.09;
+psc(2) = 0.09;
+ipsc(1) = 0.04;
 % number of external events
 no_pcs = length(psc);
+no_ipcs = length(ipsc);
 tau_s = 0.003;
 Q = 40e-12;
 I_0 = Q ./ tau_s;
 % index for each ext. event? IE psc(1)/dt, psc(2)/dt...
 index_pscs = round(psc ./ dt);
+index_ipscs = round(ipsc ./ dt);
 
 % voltage matrix
 V = zeros(1, no_steps + 1);
@@ -56,11 +60,16 @@ no_spikes = 0;
 
 %% SIMULATION
 for i=1:no_steps
-    for k=1:no_pcs;
+    for k=1:no_pcs
         % if step sits on an external event step...
         if i == index_pscs(k)
             % increase the current
             I(i) = I(i) + I_0;
+        end
+    end
+    for x=1:no_ipcs
+        if i == index_ipscs(x)
+            I(i) = I(i) - I_0;
         end
     end
     I(i+1) = I(i)-(dt/tau_s).*I(i);
